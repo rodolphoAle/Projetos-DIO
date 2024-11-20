@@ -1,0 +1,69 @@
+--  Quais são os nomes e endereços de todos os clientes cadastrados?
+
+SELECT 
+    p.nome AS cliente_nome,
+    p.endereco AS cliente_endereco,
+    c.telefone AS cliente_telefone
+FROM cliente c
+JOIN person p ON c.idPerson = p.idPerson;
+
+
+-- Quais são os clientes com o telefone que começa com o número "12"?
+
+SELECT p.nome, c.telefone
+FROM person p
+JOIN cliente c ON p.idPerson = c.idPerson
+WHERE c.telefone LIKE '12%';
+
+--  Qual é o nome do cliente, a descrição da ordem de serviço, o mecânico que a realizou e o serviço realizado?
+
+SELECT 
+    p.nome AS cliente, 
+    os.descricao AS ordem_servico, 
+    m.especialidade AS mecanico, 
+    s.descricao AS servico
+FROM cliente c
+JOIN person p ON c.idPerson = p.idPerson
+JOIN veiculo v ON c.idCliente = v.idCliente
+JOIN Ordem_de_servico os ON v.idVeiculo = os.veiculo_idVeiculo
+JOIN Equipe e ON os.Equip_EquipeIdEquipe = e.idEquipe
+JOIN Equipe_com_Mecanico ehm ON e.idEquipe = ehm.Equip_EquipeIdEquipe
+JOIN Mecanico m ON ehm.Mecânico_idMecanico = m.idMecanico
+JOIN Ordem_de_servico_tem_servico osts ON os.idOrdem_de_servico = osts.idOrdem_de_servico
+JOIN Servico s ON osts.idServico = s.idServico;
+
+
+-- Qual é o valor total (com frete) das ordens de serviço?
+	SELECT 
+    os.idOrdem_de_servico AS ordem_servico_id,
+    os.descricao AS descricao_ordem,
+    os.valor AS valor_servico,
+    COALESCE(os.valor + 50, 0) AS valor_total_com_frete 
+FROM Ordem_de_servico os;
+
+
+-- Quais são os mecânicos que realizaram serviços com um valor total superior a R$ 300?
+
+SELECT m.especialidade, SUM(os.valor) AS valor_total
+FROM Mecanico m
+JOIN Equipe_com_Mecanico ehm ON m.idMecanico = ehm.Mecânico_idMecanico
+JOIN Equipe e ON ehm.Equip_EquipeIdEquipe = e.idEquipe
+JOIN Ordem_de_servico os ON e.idEquipe = os.Equip_EquipeIdEquipe
+GROUP BY m.especialidade
+HAVING SUM(os.valor) > 300;
+
+
+-- Quais são as ordens de serviço cadastradas, com suas descrições, status, datas de emissão e conclusão, e os veículos associados?
+
+SELECT 
+    os.idOrdem_de_servico AS id_ordem,
+    os.descricao AS descricao_ordem,
+    os.status AS status_ordem,
+    os.data_emissao AS data_emissao,
+    os.data_conclusao AS data_conclusao,
+    v.modelo AS modelo_veiculo,
+    v.placa AS placa_veiculo
+FROM Ordem_de_servico os
+JOIN veiculo v ON os.veiculo_idVeiculo = v.idVeiculo;
+
+

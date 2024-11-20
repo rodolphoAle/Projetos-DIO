@@ -1,0 +1,98 @@
+-- Inserir dados na tabela person
+INSERT INTO person (nome, endereco) VALUES
+('João Silva', 'Rua A, 123, Centro'),
+('Maria Oliveira', 'Rua B, 456, Jardim'),
+('Carlos Souza', 'Rua C, 789, Vila Nova'),
+('Ana Costa', 'Rua D, 101, Centro'),
+('Roberto Lima', 'Rua E, 202, São José');
+
+
+-- Inserir dados na tabela cliente:
+
+INSERT INTO cliente (idPerson, telefone, email) VALUES
+(1, '1234-5678', 'joao.silva@example.com'),
+(2, '2345-6789', 'maria.oliveira@example.com'),
+(3, '3456-7890', 'carlos.souza@example.com'),
+(4, '4567-8901', 'ana.costa@example.com'),
+(5, '5678-9012', 'roberto.lima@example.com');
+
+
+-- Inserir dados na tabela veiculo:
+
+INSERT INTO veiculo (modelo, placa, cor, idCliente) VALUES
+('Fusca', 'ABC-1234', 'Azul', 1),
+('Civic', 'DEF-5678', 'Preto', 2),
+('Palio', 'GHI-9012', 'Branco', 3),
+('Hilux', 'JKL-3456', 'Prata', 4),
+('Gol', 'MNO-7890', 'Vermelho', 5);
+
+
+-- Inserir dados na tabela mecanico:
+
+INSERT INTO mecanico (idPerson, especialidade) VALUES
+(1, 'Motorista'),
+(2, 'Eletricista'),
+(3, 'Suspensão'),
+(4, 'Alinhamento'),
+(5, 'Troca de óleo');
+
+
+--Inserir dados na tabela Equipe:
+
+INSERT INTO Equipe (nome_equipe) VALUES
+('Equipe A'),
+('Equipe B'),
+('Equipe C'),
+('Equipe D'),
+('Equipe E');
+
+
+-- Inserir dados na tabela Equipe_com_Mecanico:
+
+INSERT INTO Equipe_com_Mecanico (Equip_EquipeIdEquipe, Mecânico_idMecanico) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+
+-- Inserir dados na tabela Servico:
+
+INSERT INTO Servico (descricao, valor, tempo) VALUES
+('Troca de óleo', 150.00, 30),
+('Alinhamento', 120.00, 45),
+('Troca de suspensão', 300.00, 60),
+('Reparo elétrico', 200.00, 90),
+('Lavagem e higienização', 80.00, 40);
+
+
+-- Inserir dados na tabela Peca:
+
+INSERT INTO Peca (nome, preco) VALUES
+('Filtro de óleo', 30.00),
+('Amortecedor', 100.00),
+('Pastilha de freio', 50.00),
+('Velas de ignição', 20.00),
+('Filtro de ar', 40.00);
+
+
+
+-- Inserir dados na tabela Ordem_de_servico:
+
+INSERT INTO Ordem_de_servico (descricao, data_emissao, status, valor, Equip_EquipeIdEquipe, veiculo_idVeiculo) VALUES
+('Troca de óleo no Fusca', '2024-11-01', 'Confirmada', 180.00, 1, 1),
+('Alinhamento do Civic', '2024-11-02', 'Em andamento', 130.00, 2, 2),
+('Troca de suspensão do Palio', '2024-11-03', 'Confirmada', 350.00, 3, 3),
+('Reparo elétrico na Hilux', '2024-11-04', 'Em andamento', 220.00, 4, 4),
+('Lavagem e higienização do Gol', '2024-11-05', 'Cancelada', 90.00, 5, 5);
+
+
+-- Inserir dados na tabela Ordem_de_servico_tem_servico:
+
+INSERT INTO Ordem_de_servico_tem_servico (idOrdem_de_servico, idServico) VALUES
+(1, 1), -- Troca de óleo
+(2, 4), -- Alinhamento
+(3, 3), -- Troca de suspensão
+(4, 2), -- Reparo elétrico
+(5, 5); -- Lavagem e higienização
