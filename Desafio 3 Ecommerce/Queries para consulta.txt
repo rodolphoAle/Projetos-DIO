@@ -1,0 +1,69 @@
+-- query 1
+SELECT 
+    p.nome AS Cliente, 
+    COUNT(o.idOrder) AS Quantidade_Pedidos
+FROM 
+    clients c
+JOIN 
+    orders o ON c.idClient = o.idOrderClient
+JOIN 
+    person p ON c.idPerson = p.idPerson
+GROUP BY 
+    p.idPerson
+ORDER BY 
+    Quantidade_Pedidos DESC;
+
+-- query 2
+SELECT 
+    s.idSellers, 
+    CASE 
+        WHEN f.idSupplier IS NOT NULL THEN 'Sim' 
+        ELSE 'Não' 
+    END AS "É Fornecedor"
+FROM 
+    sellers s
+LEFT JOIN 
+    supplier f ON s.idPerson = f.idPerson;
+
+-- query 3
+SELECT 
+    p.descricao AS Produto, 
+    s.idSupplier AS Fornecedor, 
+    st.endereco AS Estoque, 
+    pS.prodQtd AS Quantidade_Produto
+FROM 
+    product p
+JOIN 
+    productBySellers pS ON p.idProduto = pS.idProductProduct
+JOIN 
+    suppliers s ON pS.idProductSeller = s.idSupplier
+JOIN 
+    productInStock pIS ON p.idProduto = pIS.idProductProduct
+JOIN 
+    stock st ON pIS.idStockStock = st.idStock;
+
+
+-- query 4
+SELECT 
+    p.nome AS Fornecedor, 
+    pr.descricao AS Produto
+FROM 
+    suppliers s
+JOIN 
+    productBySellers pS ON s.idSupplier = pS.idProductSeller
+JOIN 
+    product pr ON pS.idProductProduct = pr.idProduto
+JOIN 
+    person p ON s.idPerson = p.idPerson;
+
+
+-- query 5 
+SELECT 
+    p.descricao AS Produto, 
+    SUM(pIS.stockQTD) AS Total_Estoque
+FROM 
+    product p
+JOIN 
+    productInStock pIS ON p.idProduto = pIS.idProductProduct
+GROUP BY 
+    p.idProduto;

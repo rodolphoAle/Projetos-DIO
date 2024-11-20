@@ -1,0 +1,89 @@
+-- Inserir dados na tabela person
+INSERT INTO person (nome, cnpj, cpf, contact, email) VALUES
+('João Silva', NULL, '12345678901', 'joao@gmail.com', 'joao@gmail.com'),
+('Maria Oliveira', NULL, '98765432109', 'maria@gmail.com', 'maria@gmail.com'),
+('Carlos Pereira', '12345678000199', NULL, 'carlos@gmail.com', 'carlos@gmail.com'),
+('Ana Santos', '98765432000188', NULL, 'ana@gmail.com', 'ana@gmail.com'),
+('Fernanda Lima', NULL, '45678912300', 'fernanda@gmail.com', 'fernanda@gmail.com');
+
+-- IDs gerados: 6, 7, 8, 9, 10
+
+-- Inserir dados na tabela clients
+INSERT INTO clients (idPerson, cep, rua, bairro, cidade, estado, complemento, dataNascimento) VALUES
+(6, '12345-678', 'Rua das Flores', 'Centro', 'São Paulo', 'SP', 'Apto 101', '1985-03-20'),
+(7, '98765-432', 'Avenida Brasil', 'Jardins', 'Rio de Janeiro', 'RJ', 'Casa', '1990-07-15'),
+(10, '45678-901', 'Rua Bela Vista', 'Santa Mônica', 'Belo Horizonte', 'MG', NULL, '1988-11-22'),
+(8, '11223-445', 'Praça Central', 'Lagoa', 'Porto Alegre', 'RS', 'Bloco C', '1995-02-10'),
+(9, '55667-889', 'Avenida Paulista', 'Cerqueira César', 'São Paulo', 'SP', NULL, '1980-05-30');
+
+-- Inserir dados na tabela supplier
+INSERT INTO supplier (idPerson) VALUES
+(8),
+(9),
+(7),
+(10),
+(6);
+
+-- Inserir dados na tabela sellers
+INSERT INTO sellers (idPerson) VALUES
+(9),
+(8),
+(6),
+(7),
+(10);
+
+-- Inserir dados na tabela product
+INSERT INTO product (categoria, descricao, avaliacao, size) VALUES
+('Eletronico', 'Smartphone', 4.5, 'Médio'),
+('Vestimento', 'Camiseta', 4.2, 'Grande'),
+('Brinquedo', 'Boneca', 4.8, 'Pequeno'),
+('alimentos', 'Arroz 5kg', 4.0, 'Médio'),
+('moveis', 'Mesa de Jantar', 4.6, 'Grande');
+
+-- Inserir dados na tabela stock
+INSERT INTO stock (endereco, preco) VALUES
+('Rua das Laranjeiras, 100', 1500.00),
+('Avenida Atlântica, 200', 25.00),
+('Rua do Comercio, 300', 89.99),
+('Travessa da Paz, 400', 299.00),
+('Alameda das Rosas, 500', 1499.00);
+
+-- Inserir dados na tabela productInStock
+INSERT INTO productInStock (idStockStock, idProductProduct, stockQTD) VALUES
+(1, 1, 50),
+(2, 2, 100),
+(3, 3, 200),
+(4, 4, 300),
+(5, 5, 20);
+
+-- Inserir dados na tabela payments
+INSERT INTO payments (idPaymentClient, typePayment) VALUES
+(1, 'Boleto'),
+(2, 'Cartao'),
+(3, 'Pix'),
+(4, 'Dois cartoes'),
+(5, 'Boleto');
+
+-- Inserir dados na tabela orders
+INSERT INTO orders (idOrderClient, status, descricao, frete, paymentCash, idOrdersPayment) VALUES
+(1, 'Confirmado', 'Pedido de eletrônicos', 15.00, FALSE, 1),
+(2, 'Em processamento', 'Pedido de roupas', 20.00, TRUE, 2),
+(3, 'Cancelado', 'Pedido de brinquedos', 10.00, FALSE, 3),
+(4, 'Confirmado', 'Pedido de alimentos', 5.00, TRUE, 4),
+(5, 'Confirmado', 'Pedido de móveis', 50.00, FALSE, 5);
+
+-- Inserir dados na tabela orderByProduct
+INSERT INTO orderByProduct (idProductProduct, idOrderOrder, orderQTD) VALUES
+(1, 1, 2),
+(2, 2, 3),
+(3, 3, 1),
+(4, 4, 4),
+(5, 5, 1);
+
+-- Inserir dados na tabela productBySellers
+INSERT INTO productBySellers (idProductSeller, idProductProduct, prodQtd) VALUES
+(9, 1, 10),
+(8, 2, 20),
+(6, 3, 30),
+(7, 4, 40),
+(10, 5, 50);

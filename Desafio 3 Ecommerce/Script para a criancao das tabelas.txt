@@ -1,0 +1,117 @@
+
+CREATE TABLE person (
+    idPerson SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(15),
+    cpf VARCHAR(11),
+    contact VARCHAR(255) NOT NULL,
+    email VARCHAR(100),
+    CONSTRAINT unique_cnpj_person UNIQUE (cnpj),
+    CONSTRAINT unique_cpf_person UNIQUE (cpf)
+);
+
+ALTER SEQUENCE person_idPerson_seq RESTART WITH 1;
+
+
+CREATE TABLE clients (
+    idClient SERIAL PRIMARY KEY,
+    idPerson INT NOT NULL,
+    cep VARCHAR(45) NOT NULL,
+    rua VARCHAR(45),
+    bairro VARCHAR(45),
+    cidade VARCHAR(45),
+    estado VARCHAR(100),
+    complemento VARCHAR(100),
+    dataNascimento DATE NOT NULL,
+    FOREIGN KEY (idPerson) REFERENCES person(idPerson)
+);
+
+ALTER SEQUENCE clients_idClient_seq RESTART WITH 1;
+
+
+
+CREATE TABLE supplier (
+    idSupplier SERIAL PRIMARY KEY,
+    idPerson INT NOT NULL,
+    FOREIGN KEY (idPerson) REFERENCES person(idPerson)
+);
+
+
+ALTER SEQUENCE supplier_idSupplier_seq RESTART WITH 1;
+
+
+CREATE TABLE sellers (
+    idSellers SERIAL PRIMARY KEY,
+    idPerson INT NOT NULL,
+    FOREIGN KEY (idPerson) REFERENCES person(idPerson)
+);
+
+ALTER SEQUENCE sellers_idSellers_seq RESTART WITH 1;
+
+CREATE TABLE payments (
+    idPayment SERIAL PRIMARY KEY,
+    idPaymentClient INT,
+    typePayment VARCHAR(20) CHECK (typePayment IN ('Boleto', 'Cartao', 'Dois cartoes', 'Pix')),
+    FOREIGN KEY (idPaymentClient) REFERENCES clients(idClient)
+);
+
+ALTER SEQUENCE payments_idPayment_seq RESTART WITH 1;
+
+CREATE TABLE product (
+    idProduto SERIAL PRIMARY KEY,
+    categoria VARCHAR(20) CHECK (categoria IN ('Eletronico', 'Vestimento', 'Brinquedo', 'alimentos', 'moveis')) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    avaliacao FLOAT DEFAULT 0,
+    size VARCHAR(30)
+);
+
+ALTER SEQUENCE product_idProduto_seq RESTART WITH 1;
+
+CREATE TABLE stock (
+    idStock SERIAL PRIMARY KEY,
+    endereco VARCHAR(100) NOT NULL,
+    preco NUMERIC NOT NULL
+);
+
+ALTER SEQUENCE stock_idStock_seq RESTART WITH 1;
+
+CREATE TABLE productInStock (
+    idStockStock INT,
+    idProductProduct INT,
+    stockQTD INT NOT NULL,
+    PRIMARY KEY (idStockStock, idProductProduct),
+    FOREIGN KEY (idStockStock) REFERENCES stock(idStock),
+    FOREIGN KEY (idProductProduct) REFERENCES product(idProduto)
+);
+
+CREATE TABLE orders (
+    idOrder SERIAL PRIMARY KEY,
+    idOrderClient INT,
+    status VARCHAR(20) CHECK (status IN ('Cancelado', 'Confirmado', 'Em processamento')) NOT NULL,
+    descricao VARCHAR(255) NOT NULL,
+    frete FLOAT NOT NULL,
+    paymentCash BOOLEAN DEFAULT FALSE,
+    idOrdersPayment INT,
+    FOREIGN KEY (idOrdersPayment) REFERENCES payments(idPayment),
+    FOREIGN KEY (idOrderClient) REFERENCES clients(idClient)
+);
+
+ALTER SEQUENCE orders_idOrder_seq RESTART WITH 1;
+
+CREATE TABLE orderByProduct (
+    idProductProduct INT,
+    idOrderOrder INT,
+    orderQTD INT NOT NULL,
+    PRIMARY KEY (idProductProduct, idOrderOrder),
+    FOREIGN KEY (idProductProduct) REFERENCES product(idProduto),
+    FOREIGN KEY (idOrderOrder) REFERENCES orders(idOrder)
+);
+
+CREATE TABLE productBySellers (
+    idProductSeller INT,
+    idProductProduct INT,
+    prodQtd INT NOT NULL,
+    PRIMARY KEY (idProductSeller, idProductProduct),
+    FOREIGN KEY (idProductSeller) REFERENCES sellers(idSellers),
+    FOREIGN KEY (idProductProduct) REFERENCES product(idProduto)
+);
